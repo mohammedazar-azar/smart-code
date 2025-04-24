@@ -1,0 +1,195 @@
+<html>
+    <head>
+        <style>
+         .azar{
+
+            background-color: rgb(88, 88, 88);
+            margin: 50px auto;
+            height: 90px;
+            display: inline-block;
+            border-radius: 100px;
+            animation: mam 6s 0.2s infinite ease-in-out;
+            color: rgb(99, 67, 67);
+         }
+         
+        @keyframes mam {
+            0%   { width: 250px; }
+            20%  { width: 300px; }
+            30%  { width: 350px; }
+            40%  { width: 400px; }
+            50%  { width: 450px; }
+            75%  { width: 500px; }
+            85%  { width: 550px; }
+            95%  { width: 700px; }
+            100% { width: 800px; }
+        }
+            span {
+            display: inline-block;
+            animation: abcd 6s 0.2s infinite ease-in-out;
+        }
+
+        @keyframes abcd {
+            0%   { color: white; font-size: 30px; text-transform: capitalize; }
+            10%  { color: orange; font-size: 40px; text-transform: lowercase; }
+            20%  { color: red; font-size: 50px; text-transform: capitalize; }
+            30%  { color: rgb(19, 216, 45); font-size: 60px; text-transform: lowercase; }
+            40%  { color: black; font-size: 65px; text-transform: capitalize; }
+         
+         
+            100% {
+                color: rgb(214, 243, 247);
+                font-size: 70px;
+                text-transform: uppercase;
+                text-shadow: 0 0 10px  rgb(243, 238, 237),
+                             0 0 20px  rgb(243, 238, 237),
+                             0 0 30px  rgb(243, 238, 237),
+                             0 0 40px rgb(243, 238, 237);
+            }
+        }
+            .a:hover{font-size: 50px;transition-duration: 2s;transition-delay: 0.2s; text-shadow: 0px 0px 10px rgb(211, 184, 182);text-shadow: 0px 0px 20px rgb(211, 184, 182); text-shadow: 0px 0px 30px rgb(211, 184, 182); text-shadow: 0px 0px 40px rgb(211, 184, 182);
+             }
+            
+             #response {
+            margin-top: 20px;
+            font-size: 20px;
+            color: white;
+            margin-left: 400px;
+            background-color:   rgb(59, 59, 59);
+            width: autO;
+            height: 30PX;
+        }
+             
+        .suggestions {
+            position: absolute;
+            top: 225px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            width: 300px;
+            background-color:     rgb(59, 59, 59);
+            max-height: 150px;
+            overflow-y: auto;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .suggestions div {
+            padding: 10px;
+            cursor:grab;
+            text-align: center;
+        }
+
+        .suggestions div:hover {
+            background-color: rgb(161, 142, 142);
+        }
+ </style>
+    </head>
+     <body>
+
+        <script>
+            const knownItems = {
+                "shampoo": "It is available on the top floor at shelf number 10",
+                "soap": "It is available on the top floor at shelf number 8",
+                "brush": "It is available on the top floor at shelf number 9",
+                "hi": "Hello! Welcome ✨ to ur vishal",
+                "hii": "Hello! Welcome ✨ to ur vishal",
+                "developer":"azar shesha shawn ",
+    
+            };
+    
+            const altSpellings = {
+                "shampo": "shampoo",
+                "sop": "soap",
+                "brsh": "brush",
+                "bruh": "brush",
+                "helo": "hi",
+                "founder":"developer",
+                "coder":"developer"
+            };
+    
+            function checkInput() {
+                let input = document.getElementById("in").value.trim().toLowerCase();
+                const responseBox = document.getElementById("response");
+                const suggestionsBox = document.getElementById("suggestionsBox");
+                suggestionsBox.innerHTML = "";
+    
+          
+                if (!knownItems[input] && altSpellings[input]) {
+                    input = altSpellings[input];
+                }
+    
+                for (const key in knownItems) {
+                    if (input.includes(key)) {
+                        responseBox.innerHTML = knownItems[key];
+                        return;
+                    }
+                }
+    
+                responseBox.innerHTML = "Sorry, can you type it clearly?";
+            }
+    
+            function showSuggestions() {
+                const input = document.getElementById("in").value.trim().toLowerCase();
+                const suggestionsBox = document.getElementById("suggestionsBox");
+                suggestionsBox.innerHTML = "";
+    
+                if (input.length === 0) return;
+    
+                const suggestions = Object.keys(knownItems).filter(item =>
+                    item.startsWith(input) || item.includes(input)
+                );
+    
+                const altSuggestions = Object.keys(altSpellings).filter(item =>
+                    item.startsWith(input) || item.includes(input)
+                );
+    
+                const allSuggestions = [...new Set([...suggestions, ...altSuggestions])];
+    
+                allSuggestions.forEach(suggestion => {
+                    const div = document.createElement("div");
+                    div.textContent = suggestion;
+                    div.onclick = () => {
+                        document.getElementById("in").value = suggestion;
+                        suggestionsBox.innerHTML ="";
+                        checkInput();
+                    };
+                    suggestionsBox.appendChild(div);
+                });
+            }
+    
+            document.getElementById("in").addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    checkInput();
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="MAIN" style="display:flexbox;background-color: rgb(23, 51, 51);">
+
+            <div class="title" style="height: 150px;width: auto;text-align: center; background-color: rgb(59, 59, 59);font-size: 60px;">
+        <div class="azar">
+            <span class="b" style="text-align: center; align-items: center;color:rgb(236, 234, 234);">v<sub>i</sub><sup>shal</sup></span>
+        </div>
+        
+            </div>
+          
+         
+            <div class="g"  style="height: auto; width:auto; color:rgb(236, 234, 234);background-color: rgb(59, 59, 59);">
+           <c><c style="font-size:50px; ">U<sub>R</sub><sup>VISHAL</sup></c>
+            <select style="margin-left: 5px;"> <option>locatioan</option><option>KODAGU</option></select>
+           <c  style="margin-left: 5px;">BRING HAPPINES TO UR HOME</c>
+            <select style="margin-left: 5px;" onchange="opt()"><option>ALL</option> <option>GROSERIES</option><option>CLOTHS</option></select>
+            <input type="text" placeholder="search for vechle by name" class="o" id="in" style="margin-left: 5px; width: 400px;" oninput="showSuggestions()" >
+            <button style="background-color:rgb(23, 51, 51);" onclick="checkInput()">🔍</button>
+            <c> TRUST US SHOP WITH US</c>
+            <div id="response"></div>
+            <div class="suggestions" id="suggestionsBox"></div>
+        </div>
+         </c>
+        
+            </div>
+    </body>
+
+</html>
