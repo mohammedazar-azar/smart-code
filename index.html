@@ -11,24 +11,67 @@
       font-family: "Segoe UI", Tahoma, sans-serif;
       background: linear-gradient(120deg, #c1ecde, #a3d9c9);
       color: #333;
+      scroll-behavior: smooth;
     }
     header {
       background: linear-gradient(90deg, #2c3e50, #16a085);
       color: white;
       padding: 30px 20px;
       text-align: center;
+      border-bottom: 5px solid #138d75;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
+    header h1 { margin: 0; font-size: 2.5rem; animation: fadeIn 2s ease-in-out; }
+    header p { margin: 5px 0 0; font-size: 1.1rem; color: #ecf0f1; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
     .container { width: 90%; max-width: 1200px; margin: 40px auto; }
-    section { background: #fff; padding: 30px; margin-bottom: 30px; border-radius: 15px; }
-    h2 { color: #16a085; margin-bottom: 15px; }
+    section {
+      background: #fff; padding: 30px; margin-bottom: 30px; border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12); transition: transform .3s, opacity 1s;
+      opacity: 0; transform: translateY(40px);
+    }
+    section.visible { opacity: 1; transform: translateY(0); }
+
+    h2 { color: #16a085; margin-bottom: 15px; border-left: 5px solid #16a085; padding-left: 10px; }
+
+    /* Services */
+    .services ul { list-style: none; padding: 0; }
+    .services li { margin: 10px 0; padding-left: 10px; border-left: 3px solid #16a085; }
 
     /* Booking Form */
     form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     form input, form select, form textarea, form button {
-      padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 1rem;
+      padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 1rem; transition: 0.3s;
+    }
+    form input:focus, form select:focus, form textarea:focus {
+      border-color: #16a085; outline: none; box-shadow: 0 0 8px rgba(22,160,133,0.4);
     }
     form textarea { grid-column: span 2; resize: none; }
-    form button { grid-column: span 2; background: #16a085; color: white; border: none; cursor: pointer; }
+    form button {
+      grid-column: span 2; background: #16a085; color: white; border: none; cursor: pointer;
+      font-size: 1.1rem; font-weight: bold; transition: .3s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    form button:hover { background: #138d75; transform: scale(1.05); }
+
+    /* Contact */
+    .phone-links a { display: inline-block; margin: 8px 10px; color: #16a085; font-weight: bold; text-decoration: none; transition: 0.3s; }
+    .phone-links a:hover { color: #138d75; transform: scale(1.1); }
+
+    /* Footer */
+    footer { text-align: center; padding: 20px; background: #2c3e50; color: white; font-size: 0.9rem; }
+
+    /* Floating WhatsApp Button */
+    .whatsapp-float {
+      position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white;
+      border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 1000;
+      transition: 0.3s;
+    }
+    .whatsapp-float:hover { background: #20b954; transform: scale(1.1); }
+    .error { border: 2px solid red !important; }
   </style>
 </head>
 <body>
@@ -38,6 +81,19 @@
   </header>
 
   <div class="container">
+    <!-- Services -->
+    <section class="services">
+      <h2>Our Services</h2>
+      <ul>
+        <li>Custom Welding & Fabrication</li>
+        <li>Industrial Welding Solutions</li>
+        <li>Stainless Steel & Aluminum Works</li>
+        <li>Gate, Grill & Metal Furniture Welding</li>
+        <li>Repair & Maintenance</li>
+      </ul>
+    </section>
+
+    <!-- Booking -->
     <section class="booking">
       <h2>Book Welding Work</h2>
       <form id="bookingForm">
@@ -52,28 +108,50 @@
           <option>Other</option>
         </select>
         <input type="date" id="date" required>
-        <input type="text" id="location" placeholder="Your Location (Auto + manual)" required>
+        <input type="text" id="location" placeholder="Your Location (Auto-detect available)" required>
         <textarea id="details" rows="4" placeholder="Work Details"></textarea>
         <button type="submit">Submit Booking</button>
       </form>
     </section>
+
+    <!-- Contact -->
+    <section class="contact">
+      <h2>Contact Us</h2>
+      <div class="phone-links">
+        <a href="tel:9110281895">📞 9110281895</a>
+        <a href="tel:7483551580">📞 7483551580</a>
+        <a href="tel:741731392">📞 741731392</a>
+      </div>
+      <p><strong>WhatsApp:</strong> <a href="https://wa.me/7483551580" target="_blank">Chat with us</a></p>
+      <p><strong>Location:</strong> Coorg, Karnataka</p>
+    </section>
   </div>
 
+  <footer>
+    <p>&copy; 2025 Phoenix Metal Works | All Rights Reserved</p>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/7483551580" class="whatsapp-float" target="_blank">💬</a>
+
   <script>
-    // Auto-detect GPS and add into location field
+    // Scroll animations
+    const sections = document.querySelectorAll("section");
+    window.addEventListener("scroll", () => {
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          sec.classList.add("visible");
+        }
+      });
+    });
+
+    // Auto-detect location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(pos) {
-        let lat = pos.coords.latitude;
-        let lng = pos.coords.longitude;
-        let gpsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-        let locationInput = document.getElementById("location");
-
-        // If user already typed something, append GPS
-        if (locationInput.value) {
-          locationInput.value += ` (Map: ${gpsLink})`;
-        } else {
-          locationInput.value = `Map: ${gpsLink}`;
-        }
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        document.getElementById("location").value = `https://www.google.com/maps?q=${lat},${lng}`;
       });
     }
 
@@ -81,23 +159,46 @@
     document.getElementById("bookingForm").addEventListener("submit", function(e){
       e.preventDefault();
 
-      let name = document.getElementById("name").value;
-      let phone = document.getElementById("phone").value;
-      let workType = document.getElementById("workType").value;
-      let date = document.getElementById("date").value;
-      let location = document.getElementById("location").value;
-      let details = document.getElementById("details").value;
+      let name = document.getElementById("name");
+      let phone = document.getElementById("phone");
+      let workType = document.getElementById("workType");
+      let date = document.getElementById("date");
+      let location = document.getElementById("location");
+      let details = document.getElementById("details");
+
+      // Validation check
+      let inputs = [name, phone, workType, date, location];
+      let valid = true;
+      inputs.forEach(input => {
+        if (!input.value) {
+          input.classList.add("error");
+          valid = false;
+        } else {
+          input.classList.remove("error");
+        }
+      });
+
+      if (!valid) {
+        Swal.fire("Error", "Please fill in all required fields", "error");
+        return;
+      }
 
       let message = 
         `*New Welding Booking*%0A` +
-        `👤 Name: ${name}%0A` +
-        `📞 Phone: ${phone}%0A` +
-        `🛠 Work Type: ${workType}%0A` +
-        `📅 Date: ${date}%0A` +
-        `📍 Location: ${location}%0A` +
-        `📝 Details: ${details}`;
+        `👤 Name: ${name.value}%0A` +
+        `📞 Phone: ${phone.value}%0A` +
+        `🛠 Work Type: ${workType.value}%0A` +
+        `📅 Date: ${date.value}%0A` +
+        `📍 Location: ${location.value}%0A` +
+        `📝 Details: ${details.value}`;
 
-      window.open(`https://wa.me/7483551580?text=${message}`, "_blank");
+      // Send to multiple WhatsApp numbers
+      let numbers = ["9110281895","7483551580","741731392"];
+      numbers.forEach((num, i) => {
+        setTimeout(() => {
+          window.open(`https://wa.me/${num}?text=${message}`, "_blank");
+        }, i * 800);
+      });
 
       Swal.fire("Success!", "Your booking has been sent via WhatsApp ✅", "success");
       document.getElementById("bookingForm").reset();
