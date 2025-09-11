@@ -1,26 +1,107 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title> ON PURCHASE </title>
- 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Phoenix Metal Works</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(120deg, #c1ecde, #a3d9c9);
+      color: #333;
+    }
+    header {
+      background: linear-gradient(90deg, #2c3e50, #16a085);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .container { width: 90%; max-width: 1200px; margin: 40px auto; }
+    section { background: #fff; padding: 30px; margin-bottom: 30px; border-radius: 15px; }
+    h2 { color: #16a085; margin-bottom: 15px; }
+
+    /* Booking Form */
+    form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    form input, form select, form textarea, form button {
+      padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 1rem;
+    }
+    form textarea { grid-column: span 2; resize: none; }
+    form button { grid-column: span 2; background: #16a085; color: white; border: none; cursor: pointer; }
+  </style>
 </head>
 <body>
-    <style>
-        *{
-            background-color:rgb(59, 59, 59);
-        }
-        .a{
-            overflow: hidden;
-            scrollbar-color:rgb(59, 59, 59) ;
-            scroll-padding:unset;
-            padding: 0%;
-        }
-    </style>
- 
-<iframe src="index4.html" frameborder="0" height="300px" width="100%" class="a"></iframe>
-<iframe src="index1.html" frameborder="0" height="600px" width="10%" class="a"></iframe>
-<iframe src="index2.html" frameborder="0" height="600px" width="80%" class="a"></iframe>
-<iframe src="index3.html" frameborder="0" height="60px" width="100%" class="a"></iframe>
+  <header>
+    <h1>Phoenix Metal Works</h1>
+    <p>Professional Welding & Fabrication Services</p>
+  </header>
 
+  <div class="container">
+    <section class="booking">
+      <h2>Book Welding Work</h2>
+      <form id="bookingForm">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}">
+        <select id="workType" required>
+          <option value="">Select Work Type</option>
+          <option>Gate / Grill Welding</option>
+          <option>Industrial Welding</option>
+          <option>Furniture Welding</option>
+          <option>Repair Service</option>
+          <option>Other</option>
+        </select>
+        <input type="date" id="date" required>
+        <input type="text" id="location" placeholder="Your Location (Auto + manual)" required>
+        <textarea id="details" rows="4" placeholder="Work Details"></textarea>
+        <button type="submit">Submit Booking</button>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // Auto-detect GPS and add into location field
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        let lat = pos.coords.latitude;
+        let lng = pos.coords.longitude;
+        let gpsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+        let locationInput = document.getElementById("location");
+
+        // If user already typed something, append GPS
+        if (locationInput.value) {
+          locationInput.value += ` (Map: ${gpsLink})`;
+        } else {
+          locationInput.value = `Map: ${gpsLink}`;
+        }
+      });
+    }
+
+    // WhatsApp booking
+    document.getElementById("bookingForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      let name = document.getElementById("name").value;
+      let phone = document.getElementById("phone").value;
+      let workType = document.getElementById("workType").value;
+      let date = document.getElementById("date").value;
+      let location = document.getElementById("location").value;
+      let details = document.getElementById("details").value;
+
+      let message = 
+        `*New Welding Booking*%0A` +
+        `👤 Name: ${name}%0A` +
+        `📞 Phone: ${phone}%0A` +
+        `🛠 Work Type: ${workType}%0A` +
+        `📅 Date: ${date}%0A` +
+        `📍 Location: ${location}%0A` +
+        `📝 Details: ${details}`;
+
+      window.open(`https://wa.me/7483551580?text=${message}`, "_blank");
+
+      Swal.fire("Success!", "Your booking has been sent via WhatsApp ✅", "success");
+      document.getElementById("bookingForm").reset();
+    });
+  </script>
 </body>
-
 </html>
