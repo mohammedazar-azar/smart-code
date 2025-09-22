@@ -3,50 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome to TESARECT</title>
+  <title>TESARECT - We Build Your Ideas</title>
 
   <style>
     /* Reset and background */
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      background-color:rgb(240, 240, 189);
-      overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+      background: linear-gradient(120deg, #1e1e2f, #2a2a40, #1c1c28);
+      color: #f4f4f4;
     }
 
-    /* Splash screen container */
+    /* Splash screen */
     #splash {
       position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background-color: black;
-      color: white;
+      inset: 0;
+      background: #111;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 9999;
       transition: opacity 1s ease;
     }
-
-    /* Text wrapper */
     .splash-text {
       font-size: 8vw;
       font-weight: bold;
       display: flex;
       gap: 0.2em;
+      color: #f4f4f4;
+      letter-spacing: 2px;
     }
-
     .splash-text span {
-      position: relative;
-      display: inline-block;
-      animation: dustDisintegrate 2.5s forwards;
+      animation: floatIn 1s forwards;
+      opacity: 0;
     }
-
-    /* Delayed animations for each letter */
     .splash-text span:nth-child(1) { animation-delay: 0s; }
     .splash-text span:nth-child(2) { animation-delay: 0.2s; }
     .splash-text span:nth-child(3) { animation-delay: 0.4s; }
@@ -55,104 +47,175 @@
     .splash-text span:nth-child(6) { animation-delay: 1s; }
     .splash-text span:nth-child(7) { animation-delay: 1.2s; }
     .splash-text span:nth-child(8) { animation-delay: 1.4s; }
-
-    /* Main dust disintegration animation */
-    @keyframes dustDisintegrate {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) rotate(0deg) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(100px, -100px) rotate(30deg) scale(0.5);
-      }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.9); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Particle simulation */
-    .splash-text span::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 6px;
-      height: 6px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0;
-      animation: particleEffect 2.5s ease-out forwards;
+    /* Navbar */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(0,0,0,0.6);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 1000;
+    }
+    nav a {
+      color: #ddd;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #fff;
     }
 
-    .splash-text span:nth-child(1)::before { animation-delay: 0s; }
-    .splash-text span:nth-child(2)::before { animation-delay: 0.2s; }
-    .splash-text span:nth-child(3)::before { animation-delay: 0.4s; }
-    .splash-text span:nth-child(4)::before { animation-delay: 0.6s; }
-    .splash-text span:nth-child(5)::before { animation-delay: 0.8s; }
-    .splash-text span:nth-child(6)::before { animation-delay: 1s; }
-    .splash-text span:nth-child(7)::before { animation-delay: 1.2s; }
-    .splash-text span:nth-child(8)::before { animation-delay: 1.4s; }
-
-    @keyframes particleEffect {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(150px, -150px) scale(0.2);
-      }
-    }
-
-    /* Main content - hidden initially */
-    #main {
-      display: none;
-      padding: 40px;
-      color: white;
+    /* Sections */
+    section {
+      padding: 80px 20px;
+      max-width: 1100px;
+      margin: auto;
       text-align: center;
     }
-    /* style for heading */
-    #heading{
+    section h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+    section p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.5);
+    }
+    .card h3 {
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
       text-align: center;
-      font-size: 2rem;
+      padding: 25px 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    footer a {
+      color: #f4f4f4;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+    footer a:hover {
+      color: #fff;
+    }
+    footer p {
+      margin: 6px 0;
+      font-size: 0.9rem;
+      color: #aaa;
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Splash Screen -->
+  <!-- Splash -->
   <div id="splash">
     <div class="splash-text">
-      <span>T</span>
-      <span>E</span>
-      <span>S</span>
-      <span><sub>💙</sub></span>
-      <span>R</span>
-      <span>E</span>
-      <span>C</span>
-      <span>T</span>
+      <span>T</span><span>E</span><span>S</span><span>💙</span><span>R</span><span>E</span><span>C</span><span>T</span>
     </div>
   </div>
 
-  <!-- Main Content -->
- <header id="heading">
-  <h1>TESARECT</h1>
-  <P>FUTURE WHICH WE CAN CONTROLE</P>
- </header>
-<section>
+  <!-- Navbar -->
+  <nav>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
-</section>
+  <!-- About -->
+  <section id="about">
+    <h1>About TESARECT</h1>
+    <p>We are TESARECT 🚀 — a creative tech company that turns your ideas into reality. Whether it’s <b>websites, mobile apps, games, or custom projects</b>, our mission is to bring innovation, design, and performance together.</p>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <h1>Our Services</h1>
+    <div class="cards">
+      <div class="card"><h3>🌐 Website Development</h3><p>Modern, responsive, and beautiful websites tailored for your needs.</p></div>
+      <div class="card"><h3>🎮 Game Development</h3><p>Interactive, fun, and innovative games that engage users.</p></div>
+      <div class="card"><h3>📱 App Development</h3><p>Custom mobile apps for Android & iOS with seamless performance.</p></div>
+      <div class="card"><h3>💡 Special Projects</h3><p>Have an idea? We build custom projects exactly how you imagine.</p></div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h1>Projects</h1>
+    <p>Here are some of our works and upcoming projects:</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Welding Shop Website</h3>
+        <p>A custom website for a welding shop with modern design.</p>
+        <a href="https://mohammedazar-azar.github.io/for-u-/" target="_blank">🔗 View Project</a>
+      </div>
+      <div class="card">
+        <h3>Upcoming: Porject ! SKILLERA !</h3>
+        <p>A tool that will change the process of slow learning...!SKILLERA!..PREPINSTA WHO?<br><b>Stay in touch for launch!</b></p>
+      </div>
+      <div class="card">
+        <h3>Upcoming: TUNEUP!</h3>
+        <p>who wana pay for spotify,when will make someting fee for all<br><b>Coming soon!</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h1>Contact Us</h1>
+    <p>Let’s work together! Reach out to us through the details below:</p>
+    <p>📞 +91 961115984 | +91 8050142076 | +91 8317373490 | +91 9483927300</p>
+    <!-- <p>✉️ Email: <a href="mailto:tesarect@gmail.com">tesarect@gmail.com</a></p> -->
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 TESARECT. All rights reserved.</p>
+    <p>CEO: Nandhan Shaiva | CFOs: Shashank MP, Shawn Kirayamada, Mohammed Azar</p>
+  </footer>
+
   <script>
-    // Hide splash and show main content after animation
     setTimeout(() => {
-      const splash = document.getElementById('splash');
-      splash.style.opacity = '0';
-
+      document.getElementById('splash').style.opacity = '0';
       setTimeout(() => {
-        splash.style.display = 'none';
-        document.getElementById('main').style.display = 'block';
-      }, 1000); 
-    }, 3500); 
+        document.getElementById('splash').style.display = 'none';
+      }, 1000);
+    }, 2500);
   </script>
-
 </body>
 </html>
